@@ -1,0 +1,35 @@
+<div  ng-controller="AnnouncementsController">
+    <div class="form-collection">
+        <div class="card elevation-3 limit-width log-in-card below turned" style="background: transparent">
+            <div class="card-body">
+                <div class="input-group email" style="width:100%;">
+                    <input type="text" name="username" ng-model="user" placeholder="Username"/>
+                </div>
+                <div class="input-group password" style="width:100%;">
+                    <input type="password" name="password" ng-model="pass" placeholder="Password"/>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button type="submit" class="login-btn" ng-click="loginUser()">Log in</button>
+            </div>
+        </div>
+
+        <div class="card elevation-2 limit-width sign-up-card above" style="background: transparent">
+            <div class="card-body">
+                <div class="input-group fullname" style="width:100%;">
+                    <input type="text" name="name" ng-model="name" placeholder="Full Name"/>
+                </div>
+                <div class="input-group email" style="width:100%;">
+                    <input type="text" name="username" ng-model="username"  placeholder="Email"/>
+                </div>
+                <div class="input-group password" style="width:100%;">
+                    <input type="password" name="password" ng-model="password" placeholder="Password"/>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button type="submit" ng-click="registerUser()" class="signup-btn">Sign Up</button>
+            </div>
+        </div>
+    </div>
+</div>
+
