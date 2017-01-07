@@ -4,7 +4,7 @@
 (function(){
     'use strict';
 
-    angular.module('announcements-app',['ui.router'])
+    angular.module('announcements-app',['ui.router','ui.bootstrap'])
         .config(config)
     function config($urlRouterProvider, $stateProvider){
 
@@ -17,6 +17,10 @@
         $stateProvider.state("dashboard",{
             url:"/dashboard",
             templateUrl:"/views/dashboard.html"
+        })
+        $stateProvider.state("announcements",{
+            url:"/announcements",
+            templateUrl:"/views/announcements.html"
         })
     }
 })()

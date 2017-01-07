@@ -5,9 +5,9 @@
     'use strict';
     angular.module('announcements-app')
         .controller("AnnouncementsController", AnnouncementsController)
-    AnnouncementsController.$inject = ['$scope','$state','AnnouncementsService']
+    AnnouncementsController.$inject = ['$scope','$state', '$uibModal','AnnouncementsService']
 
-    function AnnouncementsController($scope,$state, AnnouncementsService){
+    function AnnouncementsController($scope,$state, $uibModal, AnnouncementsService){
         $(document).on('click', '.below button', function(){
             var belowCard = $('.below'),
                 aboveCard = $('.above'),
@@ -31,6 +31,7 @@
         });
 
 
+
         $scope.registerUser = function(){
             return AnnouncementsService.registerUser($scope.name, $scope.username, $scope.password).then(function(data){
                 console.log(data);
@@ -41,15 +42,49 @@
         }
 
         $scope.loginUser = function(){
-            return AnnouncementsService.loginUser($scope.user, $scope.pass).then(function(data){
-                $scope.loggedUser = data.data[0];
-                if($scope.loggedUser != null){
-                    $state.go("dashboard")
+            if($scope.user != null && $scope.pass != null) {
+                return AnnouncementsService.loginUser($scope.user, $scope.pass).then(function (data) {
+                    $scope.loggedUser = data.data[0];
+                    if ($scope.loggedUser != null) {
+                        AnnouncementsService.setLoggedInUser($scope.loggedUser);
+                        $state.go("dashboard")
+                    }
+                    else {
+                        console.log("login failed")
+                    }
+                })
+            }
+        }
+        $scope.getAllAnnouncements = function(){
+            return AnnouncementsService.getAllAnnouncements().then(function(data){
+                $scope.announcements = data.data;
+            })
+        }
+        $scope.createAnnouncement = function(){
+            var modalInstance = $uibModal.open({
+                animation: false,
+                templateUrl: 'views/createModal.html',
+                size: 'lg',
+                controller: function($scope, $uibModalInstance){
+                    $scope.saveAnnouncement = function(){
+                        console.log(AnnouncementsService.getLoggedInUser())
+                        AnnouncementsService.createAnnouncement(AnnouncementsService.getLoggedInUser().name,
+                                                                AnnouncementsService.getLoggedInUser().email,
+                                                                $scope.title, $scope.content).then(function(data){
+                            console.log(data)
+                            $uibModalInstance.close();
+                        })
+                    }
                 }
-                else
-                {
-                    console.log("login failed")
-                }
+            })
+        }
+        $scope.manageAnnouncements = function(){
+            $state.go('announcements')
+        }
+        $scope.getUsersAnnouncements = function(){
+            return AnnouncementsService.getUsersAnnouncements(AnnouncementsService.getLoggedInUser().email).then(function(data){
+                $scope.usersAnnouncements = data.data;
+                console.log($scope.usersAnnouncements)
             })
         }
     }

@@ -8,9 +8,15 @@
     AnnouncementsService.$inject = ['$http']
 
     function AnnouncementsService($http){
+        var loggedUser = null;
         var service = {
             registerUser: registerUser,
-            loginUser: loginUser
+            loginUser: loginUser,
+            setLoggedInUser: setLoggedInUser,
+            getLoggedInUser: getLoggedInUser,
+            createAnnouncement: createAnnouncement,
+            getAllAnnouncements: getAllAnnouncements,
+            getUsersAnnouncements: getUsersAnnouncements
         }
         return service;
 
@@ -29,6 +35,36 @@
                 url:"/login",
                 headers:{"Content-Type":"application/x-www-form-urlencoded"},
                 data:"username="+username+"&password="+password
+            })
+        }
+
+        function setLoggedInUser(user){
+            loggedUser = user;
+        }
+        function getLoggedInUser(){
+            return loggedUser;
+        }
+
+        function createAnnouncement(name, user, title, content){
+            return $http({
+                method:"POST",
+                url:"/create",
+                headers:{"Content-Type":"application/x-www-form-urlencoded"},
+                data:"name="+name+"&user="+user+"&title="+title+"&content="+content
+            })
+        }
+        function getAllAnnouncements(){
+            return $http({
+                method:"GET",
+                url:"/get-announcements"
+            })
+        }
+        function getUsersAnnouncements(user){
+            return $http({
+                method:"POST",
+                url:"/user-announcement",
+                headers:{"Content-Type":"application/x-www-form-urlencoded"},
+                data:"user="+user
             })
         }
     }

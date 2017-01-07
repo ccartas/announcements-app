@@ -1,3 +1,38 @@
-<div>
-    <h1>Hi there</h1>
+<div class="container" ng-controller="AnnouncementsController" ng-init="getAllAnnouncements()">
+    <div class="row">
+        <div class="col-md-12">
+            <h4>Available Announcements</h4>
+            <div class="table-responsive">
+
+
+                <table id="mytable" class="table table-bordred table-striped">
+
+                    <thead>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Title</th>
+                    <th>Content</th>
+                    </thead>
+
+                    <tbody>
+                    <tr ng-repeat="announcement in announcements">
+                        <td>{{announcement.name}}</td>
+                        <td>{{announcement.user}}</td>
+                        <td>{{announcement.title}}</td>
+                        <td>{{announcement.content}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <button class="btn btn-default" ng-click="createAnnouncement()">Create Announcement</button>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-default" ng-click="manageAnnouncements()">Manage Announcements</button>
+        </div>
+    </div>
+</div>
 </div>

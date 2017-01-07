@@ -1,0 +1,21 @@
+<div class="source-list-modal">
+    <div class="modal-header">
+        <h3 class="modal-title" style="text-align:center">
+            New Announcement
+        </h3>
+    </div>
+    <div class="modal-body">
+        <form>
+            <div class="row">
+                <input class="form-control center-element" type="text" ng-model="title" placeholder="Announcement title">
+            </div>
+            <div class="row">
+                <textarea class="form-control center-element" name="content" ng-model="content" cols="40" placeholder="Content"></textarea>
+            </div>
+        </form>
+        <div class="controls">
+            <button class="btn btn-primary" type="button" ng-click="saveAnnouncement()">Save</button>
+            <button class="btn btn-primary" type="button" ng-click="cancelAnnouncement()">Cancel</button>
+        </div>
+    </div>
+</div>

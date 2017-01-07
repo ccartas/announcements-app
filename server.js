@@ -28,10 +28,27 @@ app.post('/register', function(request, response){
     })
 })
 app.post('/login', function(request, response){
-    console.log(request.body.username + request.body.password)
     users.find({email : request.body.username, password: request.body.password}, function(err, result){
         if(err) console.log(err)
         response.json(result)
+    })
+})
+
+app.post('/create', function(request, response){
+    var data = {name: request.body.name, user: request.body.user, title: request.body.title, content: request.body.content};
+    announcements.insert(data, function(err, result){
+        if(err) console.log(err)
+        response.json(result)
+    })
+})
+app.get('/get-announcements', function(request,response){
+    announcements.find({}).then(function(data){
+        response.json(data)
+    })
+})
+app.post('/user-announcement', function(request, response){
+    announcements.find({user: request.body.user}).then(function(data){
+        response.json(data);
     })
 })
 app.listen("9090")

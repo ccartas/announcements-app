@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "dependencies": {
     "angular": "^1.6.1",
+    "angular-ui-bootstrap": "^2.4.0",
     "angular-ui-router": "^0.3.2",
     "body-parser": "^1.15.2",
     "bootstrap": "^3.3.7",
