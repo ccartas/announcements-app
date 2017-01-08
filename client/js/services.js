@@ -16,7 +16,9 @@
             getLoggedInUser: getLoggedInUser,
             createAnnouncement: createAnnouncement,
             getAllAnnouncements: getAllAnnouncements,
-            getUsersAnnouncements: getUsersAnnouncements
+            getUsersAnnouncements: getUsersAnnouncements,
+            updateAnnouncement: updateAnnouncement,
+            deleteAnnouncement: deleteAnnouncement
         }
         return service;
 
@@ -65,6 +67,24 @@
                 url:"/user-announcement",
                 headers:{"Content-Type":"application/x-www-form-urlencoded"},
                 data:"user="+user
+            })
+        }
+
+        function updateAnnouncement(id,new_title,new_content){
+            return $http({
+                method:"PUT",
+                url:"/edit-announcement",
+                headers:{"Content-Type":"application/x-www-form-urlencoded"},
+                data:"id="+id+"&title="+new_title+"&content="+new_content
+            })
+        }
+
+        function deleteAnnouncement(id){
+            return $http({
+                method:"PUT",
+                url:"/delete-announcement",
+                headers:{"Content-Type":"application/x-www-form-urlencoded"},
+                data:"id="+id
             })
         }
     }

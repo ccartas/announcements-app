@@ -61,31 +61,98 @@
             })
         }
         $scope.createAnnouncement = function(){
-            var modalInstance = $uibModal.open({
-                animation: false,
-                templateUrl: 'views/createModal.html',
-                size: 'lg',
-                controller: function($scope, $uibModalInstance){
-                    $scope.saveAnnouncement = function(){
-                        console.log(AnnouncementsService.getLoggedInUser())
-                        AnnouncementsService.createAnnouncement(AnnouncementsService.getLoggedInUser().name,
-                                                                AnnouncementsService.getLoggedInUser().email,
-                                                                $scope.title, $scope.content).then(function(data){
-                            console.log(data)
-                            $uibModalInstance.close();
-                        })
-                    }
-                }
-            })
+            var loggedUser = AnnouncementsService.getLoggedInUser()
+            if(loggedUser)
+                var modalInstance = $uibModal.open({
+                    animation: false,
+                    templateUrl: 'views/createModal.html',
+                    size: 'lg',
+                    controller: function($scope, $uibModalInstance){
+                        $scope.saveAnnouncement = function(){
+                            AnnouncementsService.createAnnouncement(loggedUser.name,
+                                loggedUser.email,
+                                $scope.title, $scope.content).then(function(data){
+                                    $uibModalInstance.close();
+                                    $state.go($state.current,{},{reload:true})
+                                }).catch(function(error){
+                                    console.log(error)
+                                })
+                            }
+
+                            $scope.cancelAnnouncement = () => {
+                                $uibModalInstance.close()
+                            }
+                        }
+                    })
+            else
+                $state.go('login')
         }
         $scope.manageAnnouncements = function(){
             $state.go('announcements')
         }
+
         $scope.getUsersAnnouncements = function(){
-            return AnnouncementsService.getUsersAnnouncements(AnnouncementsService.getLoggedInUser().email).then(function(data){
-                $scope.usersAnnouncements = data.data;
-                console.log($scope.usersAnnouncements)
-            })
+            if(AnnouncementsService.getLoggedInUser())
+                return AnnouncementsService.getUsersAnnouncements(AnnouncementsService.getLoggedInUser().email).then(function(data){
+                    $scope.usersAnnouncements = data.data;
+                })
+            else
+                $state.go('login')
         }
+
+        $scope.updateModal = function(id){
+            var loggedUser = AnnouncementsService.getLoggedInUser()
+            if(loggedUser)
+                var modalInstance = $uibModal.open({
+                    templateUrl: 'views/updateModal.html',
+                    resolve: {
+                        id: () => id
+                    },
+                    controller: function($scope, $uibModalInstance, id){
+                        $scope.updateAnnouncement = function(){
+                            AnnouncementsService.updateAnnouncement(id,$scope.title,$scope.content).then(data => {
+                                $uibModalInstance.close();
+                                $state.go($state.current,{},{reload:true})
+                            }).catch(error => {
+                                console.log(error)
+                            })
+                        }
+                        $scope.closeModal = () => {
+                            $uibModalInstance.close()
+                        }
+                    }
+                })
+            else
+                $state.go('login')
+        }
+
+        $scope.deleteModal = function(id){
+            var loggedUser = AnnouncementsService.getLoggedInUser()
+            if(loggedUser)
+                var modalInstance = $uibModal.open({
+                    templateUrl: 'views/deleteModal.html',
+                    resolve: {
+                        id: () => id
+                    },
+                    controller: function($scope, $uibModalInstance, id){
+                        $scope.deleteAnnouncement = function(){
+                            var loggedUser = AnnouncementsService.getLoggedInUser()
+                            if(loggedUser)
+                                AnnouncementsService.deleteAnnouncement(id).then(data => {
+                                    $uibModalInstance.close();
+                                    $state.go($state.current,{},{reload:true})
+                                }).catch(error => {
+                                    console.log(error)
+                                })
+                            }
+                            $scope.closeModal = () => {
+                                $uibModalInstance.close()
+                            }
+                        }
+                    })
+            else
+                $state.go('login')
+        }
+
     }
 })()

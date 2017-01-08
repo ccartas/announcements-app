@@ -51,4 +51,26 @@ app.post('/user-announcement', function(request, response){
         response.json(data);
     })
 })
+
+app.put('/edit-announcement', (request,response) => {
+    announcements.update({ _id: request.body.id },
+   {
+     $set: {
+       title: request.body.title,
+       content: request.body.content
+     }
+   }).then(data => {
+        response.json(data)
+   }).catch(error => {
+        console.log(error)
+   })
+})
+
+app.put('/delete-announcement', (request,response) => {
+    announcements.remove({_id: new mongo.ObjectId(request.body.id)}).then(data => {
+        response.json(data)
+    }).catch(error => {
+        console.log(error)
+    })
+})
 app.listen("9090")
