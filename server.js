@@ -73,4 +73,6 @@ app.put('/delete-announcement', (request,response) => {
         console.log(error)
     })
 })
-app.listen("9090")
+app.listen("9090", () => {
+    console.log('Server started on 9090')
+})
